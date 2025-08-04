@@ -12,7 +12,3 @@ before_script:
   - echo "🌐 Web URL:"
   - tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
   - tail -f /dev/null
-
-script:
-  - echo "tmate VPS running..."
-
