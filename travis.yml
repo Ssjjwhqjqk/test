@@ -1,0 +1,17 @@
+language: minimal
+
+install:
+  - sudo apt update
+  - sudo apt install -y openssh-client tmate curl
+
+before_script:
+  - tmate -S /tmp/tmate.sock new-session -d
+  - sleep 5
+  - echo "🔗 SSH Link:"
+  - tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+  - echo "🌐 Web URL:"
+  - tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+  - tail -f /dev/null
+
+script:
+  - echo "tmate session started..."
