@@ -1,14 +1,21 @@
 language: minimal
 
-install:
-  - sudo apt update
-  - sudo apt install -y openssh-client tmate curl
+services:
+  - docker
 
-before_script:
-  - tmate -S /tmp/tmate.sock new-session -d
-  - sleep 5
-  - echo "🔗 SSH Link:"
-  - tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-  - echo "🌐 Web URL:"
-  - tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
-  - tail -f /dev/null
+before_install:
+  - apt-get update
+  - apt-get install -y openssh-client wget
+
+script:
+  - |
+    echo "Installing tmate..."
+    apt-get update && apt-get install -y tmate
+    echo "Starting tmate..."
+    tmate -S /tmp/tmate.sock new-session -d
+    tmate -S /tmp/tmate.sock wait tmate-ready
+    echo "SSH link:"
+    tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+    echo "Web link:"
+    tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+    while true; do sleep 60; done
