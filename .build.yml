@@ -1,0 +1,19 @@
+image: alpine/latest
+packages:
+  - bash
+  - openssh
+  - curl
+  - git
+  - tmate
+
+tasks:
+  - setup: |
+      apk add --no-cache openssh tmate bash curl
+      echo "Starting tmate..."
+      tmate -S /tmp/tmate.sock new-session -d
+      sleep 5   # wait for tmate to start
+      tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+      tmate -S /tmp/tmate.sock display -p '#{tmate_ssh_ro}'
+      tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+      # keep session alive so it doesn't exit immediately
+      tail -f /dev/null
